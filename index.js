@@ -5,6 +5,8 @@ const
   express = require('express'),
   bodyParser = require('body-parser'),
   app = express().use(bodyParser.json()); // creates express http server
+  var MongoClient = require('mongodb').MongoClient;
+  var url = "mongodb://vinicioMongo:123mongo@cluster0-shard-00-00-lsstx.mongodb.net:27017,cluster0-shard-00-01-lsstx.mongodb.net:27017,cluster0-shard-00-02-lsstx.mongodb.net:27017/BancarioBot?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true";
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
@@ -24,6 +26,17 @@ app.post('/webhook', (req, res) => {
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0];
         console.log(webhook_event);
+
+        MongoClient.connect(url, function(err, db) {
+          if (err) throw err;
+          var dbo = db.db("BancarioBot");
+          dbo.collection("Message").insertOne(webhook_event, function(err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+            db.close();
+          });
+        });
+
       });
   
       // Returns a '200 OK' response to all requests
@@ -54,6 +67,22 @@ app.get('/webhook', (req, res) => {
         
         // Responds with the challenge token from the request
         console.log('WEBHOOK_VERIFIED');
+
+        MongoClient.connect(url, function(err, db) {
+          console.dir(err);
+          if (err) throw err;
+          var myobj = { mode: mode, 
+                        token: token,
+                        challenge: challenge };
+          var dbo = db.db("BancarioBot");                
+          dbo.collection("Webhook").insertOne(myobj, function(err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+            db.close();
+          });
+        });
+
+
         res.status(200).send(challenge);
       
       } else {
