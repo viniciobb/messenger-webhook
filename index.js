@@ -35,7 +35,7 @@ app.post('/webhook', (req, res) => {
         console.log(webhook_event.message);
       
 
-        const q = encodeURIComponent(webhook_event.message);
+        const q = encodeURIComponent(webhook_event.message.text);
         const uri = 'https://api.wit.ai/message?q=' + q;
         const auth = 'Bearer ' + CLIENT_TOKEN;
         fetch(uri, {headers: {Authorization: auth}})
@@ -43,7 +43,7 @@ app.post('/webhook', (req, res) => {
         .then(res => {
           
               console.dir(res);
-              
+
               console.log(res._text);
               console.log(res.entities);
 
