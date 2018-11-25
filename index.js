@@ -39,6 +39,7 @@ app.post('/webhook', (req, res) => {
         // pass the event to the appropriate handler function
 
         if (webhook_event.message) {
+          console.log("chamou handleMessage");
           handleMessage(sender_psid, webhook_event.message);        
         } else if (webhook_event.postback) {
           handlePostback(sender_psid, webhook_event.postback);
@@ -97,9 +98,14 @@ app.post('/webhook', (req, res) => {
   // Handles messages events
 function handleMessage(sender_psid, received_message) {
 
+  console.log("entrou handleMessage");
+
   let response;
 
   // Check if the message contains text
+
+  console.log("received_message.text : "+ received_message.text);
+
   if (received_message.text) {    
 
     // Create the payload for a basic text message
