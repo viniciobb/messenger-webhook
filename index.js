@@ -4,6 +4,7 @@
 const
   express = require('express'),
   fetch = require('node-fetch'),
+  request = require('request'),
   bodyParser = require('body-parser'),
   app = express().use(bodyParser.json()); // creates express http server
   
@@ -34,46 +35,55 @@ app.post('/webhook', (req, res) => {
         let sender_psid = webhook_event.sender.id;
         console.log('Sender PSID: ' + sender_psid);
 
-        console.log(webhook_event);
-        console.log("webhook_event.message");
-        console.log(webhook_event.message);
+        // Check if the event is a message or postback and
+        // pass the event to the appropriate handler function
+
+        if (webhook_event.message) {
+          handleMessage(sender_psid, webhook_event.message);        
+        } else if (webhook_event.postback) {
+          handlePostback(sender_psid, webhook_event.postback);
+        }
+        
+        //console.log(webhook_event);
+        //console.log("webhook_event.message");
+        //console.log(webhook_event.message);
       
 
-        const q = encodeURIComponent(webhook_event.message.text);
-        const uri = 'https://api.wit.ai/message?q=' + q;
-        const auth = 'Bearer ' + CLIENT_TOKEN;
-        fetch(uri, {headers: {Authorization: auth}})
-        .then(res => res.json())
-        .then(res => {
+      //   const q = encodeURIComponent(webhook_event.message.text);
+      //   const uri = 'https://api.wit.ai/message?q=' + q;
+      //   const auth = 'Bearer ' + CLIENT_TOKEN;
+      //   fetch(uri, {headers: {Authorization: auth}})
+      //   .then(res => res.json())
+      //   .then(res => {
           
-              console.dir(res);
+      //         console.dir(res);
 
-              console.log(res._text);
-              console.log(res.entities);
+      //         console.log(res._text);
+      //         console.log(res.entities);
 
-              MongoClient.connect(url, function(err, db) {
-                if (err) throw err;
-                var dbo = db.db("BancarioBot");
+      //         MongoClient.connect(url, function(err, db) {
+      //           if (err) throw err;
+      //           var dbo = db.db("BancarioBot");
 
-                var myobj = { 
-                  sender_psid: sender_psid,
-                  webhook_event: webhook_event, 
-                  respostaWIT: res
-                };
+      //           var myobj = { 
+      //             sender_psid: sender_psid,
+      //             webhook_event: webhook_event, 
+      //             respostaWIT: res
+      //           };
 
-                dbo.collection("Message").insertOne(myobj, function(err, res) {
-                  if (err) throw err;
-                  console.log("1 document inserted");
-                  db.close();
-                });
-              });
+      //           dbo.collection("Message").insertOne(myobj, function(err, res) {
+      //             if (err) throw err;
+      //             console.log("1 document inserted");
+      //             db.close();
+      //           });
+      //         });
                          
         
-          }
+      //     }
       
-        );
+      //   );
 
-      });
+       });
   
       // Returns a '200 OK' response to all requests
       res.status(200).send('EVENT_RECEIVED');
@@ -83,6 +93,60 @@ app.post('/webhook', (req, res) => {
     }
   
   });
+
+  // Handles messages events
+function handleMessage(sender_psid, received_message) {
+
+  let response;
+
+  // Check if the message contains text
+  if (received_message.text) {    
+
+    // Create the payload for a basic text message
+    response = {
+      "text": `You sent the message: "${received_message.text}". Now send me an image!`
+    }
+  }  
+  
+  // Sends the response message
+  callSendAPI(sender_psid, response);
+
+}
+
+function callSendAPI(sender_psid, response) {
+  // Construct the message body
+  let request_body = {
+    "recipient": {
+      "id": sender_psid
+    },
+    "message": response
+  }
+
+  // Send the HTTP request to the Messenger Platform
+  request({
+    "uri": "https://graph.facebook.com/v2.6/me/messages",
+    "qs": { "access_token": EAAEbkIH10nMBALMzQAk8poEdrVT70GjZC1q4ZClwSSZCh1OVweiU4RZAmwMjpltQwmHol4ZB9ZCSieZCK9EC04CpAZCueqSNSZBkkFvD4iechYr9BksdisQZCgkGQeBNsH64GPZBg0AHG2tSzPIp9KGDv7fbXGjyf0UzZAjQoYgarsVFavDXP6G2aXkp4UjPzYm1vrZCX4OZADvHdRhAZDZD },
+    "method": "POST",
+    "json": request_body
+  }, (err, res, body) => {
+    if (!err) {
+      console.log('message sent!')
+    } else {
+      console.error("Unable to send message:" + err);
+    }
+  }); 
+
+}
+
+// Handles messaging_postbacks events
+function handlePostback(sender_psid, received_postback) {
+
+}
+
+// Sends response messages via the Send API
+function callSendAPI(sender_psid, response) {
+  
+}
 
   // Adds support for GET requests to our webhook
 app.get('/webhook', (req, res) => {
