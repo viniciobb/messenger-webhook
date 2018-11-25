@@ -30,6 +30,10 @@ app.post('/webhook', (req, res) => {
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0];
         console.log("webhook_event");
+
+        let sender_psid = webhook_event.sender.id;
+        console.log('Sender PSID: ' + sender_psid);
+
         console.log(webhook_event);
         console.log("webhook_event.message");
         console.log(webhook_event.message);
@@ -52,8 +56,9 @@ app.post('/webhook', (req, res) => {
                 var dbo = db.db("BancarioBot");
 
                 var myobj = { 
+                  sender_psid: sender_psid,
                   webhook_event: webhook_event, 
-                  res: res
+                  respostaWIT: res
                 };
 
                 dbo.collection("Message").insertOne(myobj, function(err, res) {
