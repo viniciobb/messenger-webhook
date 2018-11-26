@@ -113,6 +113,8 @@ function handleMessage(sender_psid, received_message) {
       "text": `You sent the message: "${received_message.text}". Now send me an image!`
     }
   }  
+
+  console.log("chamou callSendAPI" );
   
   // Sends the response message
   callSendAPI(sender_psid, response);
@@ -128,6 +130,9 @@ function callSendAPI(sender_psid, response) {
     "message": response
   }
 
+  console.log("request_body :" + request_body );
+
+
   // Send the HTTP request to the Messenger Platform
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
@@ -141,18 +146,38 @@ function callSendAPI(sender_psid, response) {
       console.error("Unable to send message:" + err);
     }
   }); 
-
 }
+
+// function callSendAPI(sender_psid, response) {
+//   // Construct the message body
+//   let request_body = {
+//     "recipient": {
+//       "id": sender_psid
+//     },
+//     "message": response
+//   };
+
+//   // Send the HTTP request to the Messenger Platform
+//   request({
+//     "uri": "https://graph.facebook.com/v2.6/me/messages",
+//     "qs": { "access_token": "EAAEbkIH10nMBALMzQAk8poEdrVT70GjZC1q4ZClwSSZCh1OVweiU4RZAmwMjpltQwmHol4ZB9ZCSieZCK9EC04CpAZCueqSNSZBkkFvD4iechYr9BksdisQZCgkGQeBNsH64GPZBg0AHG2tSzPIp9KGDv7fbXGjyf0UzZAjQoYgarsVFavDXP6G2aXkp4UjPzYm1vrZCX4OZADvHdRhAZDZD" },
+//     "method": "POST",
+//     "json": request_body
+//   }, (err, res, body) => {
+//     if (!err) {
+//       console.log('message sent!')
+//     } else {
+//       console.error("Unable to send message:" + err);
+//     }
+//   }); 
+
+// }
 
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
-
+  console.log("handlePostback");
 }
 
-// Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
-  
-}
 
   // Adds support for GET requests to our webhook
 app.get('/webhook', (req, res) => {
