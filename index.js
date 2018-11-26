@@ -109,15 +109,61 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
 
     // Create the payload for a basic text message
-    response = {
-      "text": `You sent the message: "${received_message.text}". Now send me an image!`
-    }
+    //response = {
+      //"text": `You sent the message: "${received_message.text}". Now send me an image!`
+    //}
+
+    const q = encodeURIComponent(webhook_event.message.text);
+    const uri = 'https://api.wit.ai/message?q=' + q;
+    const auth = 'Bearer ' + CLIENT_TOKEN;
+    fetch(uri, {headers: {Authorization: auth}})
+    .then(res => res.json())
+    .then(res => {
+      
+          console.dir(res);
+
+          console.log(res._text);
+          console.log(res.entities);
+
+          response = {
+            "text": JSON.stringify(res)
+          };
+
+          console.log(response);
+          console.dir(response);
+
+          console.log("chamou callSendAPI" );
+  
+          // Sends the response message
+          callSendAPI(sender_psid, response);
+
+          // MongoClient.connect(url, function(err, db) {
+          //   if (err) throw err;
+          //   var dbo = db.db("BancarioBot");
+
+          //   var myobj = { 
+          //     sender_psid: sender_psid,
+          //     webhook_event: webhook_event, 
+          //     respostaWIT: res
+          //   };
+
+          //   dbo.collection("Message").insertOne(myobj, function(err, res) {
+          //     if (err) throw err;
+          //     console.log("1 document inserted");
+          //     db.close();
+          //   });
+          // });
+                      
+    
+      }
+  
+    );
+
+
+
   }  
 
-  console.log("chamou callSendAPI" );
   
-  // Sends the response message
-  callSendAPI(sender_psid, response);
 
 }
 
