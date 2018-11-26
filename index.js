@@ -113,7 +113,7 @@ function handleMessage(sender_psid, received_message) {
       //"text": `You sent the message: "${received_message.text}". Now send me an image!`
     //}
 
-    const q = encodeURIComponent(webhook_event.message.text);
+    const q = encodeURIComponent(received_message.text);
     const uri = 'https://api.wit.ai/message?q=' + q;
     const auth = 'Bearer ' + CLIENT_TOKEN;
     fetch(uri, {headers: {Authorization: auth}})
