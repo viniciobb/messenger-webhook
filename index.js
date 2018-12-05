@@ -10,8 +10,8 @@ const
   
   var MongoClient = require('mongodb').MongoClient;
   var url = "mongodb://vinicioMongo:123mongo@cluster0-shard-00-00-lsstx.mongodb.net:27017,cluster0-shard-00-01-lsstx.mongodb.net:27017,cluster0-shard-00-02-lsstx.mongodb.net:27017/BancarioBot?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true";
-  //var CLIENT_TOKEN = '4TMZFCK5FZUGFDFIRXRJNVY4Y4SEMRDZ'; // TCC-BANCARIO
-  var CLIENT_TOKEN = 'CFPCUH3V443ESVXTNEGTZSPHHRXNHEBX'; // BANCARIO
+  var CLIENT_TOKEN = '4TMZFCK5FZUGFDFIRXRJNVY4Y4SEMRDZ'; // TCC-BANCARIO
+  //var CLIENT_TOKEN = 'CFPCUH3V443ESVXTNEGTZSPHHRXNHEBX'; // BANCARIO
   
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
