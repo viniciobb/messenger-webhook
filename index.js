@@ -145,7 +145,7 @@ function handleMessage(sender_psid, received_message) {
               
               if( (property == "transferencia") || (property == "conta-corrente") || (property == "agencia") || (property == "tipo_conta_corrente") || (property == "tipo_agencia") ){
 
-                responseText = " transferencia " + responseText;
+                responseText = property + " ";
 
               }
             }
