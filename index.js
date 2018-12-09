@@ -153,7 +153,7 @@ function handleMessage(sender_psid, received_message) {
               else{
                 if((property == "tipo_conta_corrente") || (property == "tipo_agencia") || (property == "amount_of_money")){
 
-                  responseText = res[property][0].value + " " +responseText;
+                  responseText = res.entities[property][0].value + " " +responseText;
 
                 }
 
