@@ -101,6 +101,7 @@ function handleMessage(sender_psid, received_message) {
   console.log("entrou handleMessage");
 
   let response;
+  let responseText;
 
   // Check if the message contains text
 
@@ -141,10 +142,25 @@ function handleMessage(sender_psid, received_message) {
           }else{
 
             for (var property in res.entities){
-              console.log(property + " = " + res.entities[property]);
+              
+              if( (property == "transferencia") || (property == "conta-corrente") || (property == "agencia") || (property == "tipo_conta_corrente") || (property == "tipo_agencia") ){
+
+                responseText = " transferencia " + responseText;
+
+              }
             }
 
           }
+
+          if(responseText.length > 0){
+
+            response = {
+              "text": responseText
+            };
+
+          }
+
+          
 
           console.log("chamou callSendAPI" ); 
   
