@@ -125,14 +125,28 @@ function handleMessage(sender_psid, received_message) {
           console.log(res._text);
           console.log(res.entities);
 
-          response = {
-            "text": JSON.stringify(res)
-          };
+          //response = {
+            //"text": JSON.stringify(res)
+          //};
 
           console.log(response);
           console.dir(response);
 
-          console.log("chamou callSendAPI" );
+          if(isEmptyObject(res.entities)){
+
+             response = {
+              "text": " Não entendi a solicitação. Estou preparado para fazer transferências."
+            };
+
+          }else{
+
+            for (var property in res.entities){
+              console.log(property + " = " + res.entities[property]);
+            }
+
+          }
+
+          console.log("chamou callSendAPI" ); 
   
           // Sends the response message
           callSendAPI(sender_psid, response);
@@ -166,6 +180,20 @@ function handleMessage(sender_psid, received_message) {
   
 
 }
+
+
+//What about making a simple function?
+
+function isEmptyObject(obj) {
+  for(var prop in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
 
 function callSendAPI(sender_psid, response) {
   // Construct the message body
