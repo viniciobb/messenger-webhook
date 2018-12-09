@@ -101,7 +101,7 @@ function handleMessage(sender_psid, received_message) {
   console.log("entrou handleMessage");
 
   let response;
-  let responseText;
+  let responseText = "";
 
   // Check if the message contains text
 
@@ -142,10 +142,11 @@ function handleMessage(sender_psid, received_message) {
           }else{
 
             for (var property in res.entities){
+
               
               if( (property == "transferencia") || (property == "conta-corrente") || (property == "agencia") || (property == "tipo_conta_corrente") || (property == "tipo_agencia") ){
-
-                responseText = property + " ";
+                console.log("Entidade :" + property);
+                responseText = property + " " +responseText;
 
               }
             }
