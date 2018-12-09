@@ -144,7 +144,7 @@ function handleMessage(sender_psid, received_message) {
             for (var property in res.entities){
 
               
-              if( (property == "transferencia") || (property == "conta-corrente") || (property == "agencia") || (property == "tipo_conta_corrente") || (property == "tipo_agencia") ){
+              if( (property == "transferencia") || (property == "conta-corrente") || (property == "agencia") || (property == "tipo_conta_corrente") || (property == "tipo_agencia") || (property == "amount_of_money")){
                 console.log("Entidade :" + property);
                 responseText = property + " " +responseText;
 
