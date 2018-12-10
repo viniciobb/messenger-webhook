@@ -126,15 +126,15 @@ function handleMessage(sender_psid, received_message) {
       
           console.dir(res);
 
-          console.log(res._text);
-          console.log(res.entities);
+          //console.log(res._text);
+          //console.log(res.entities);
 
           //response = {
             //"text": JSON.stringify(res)
           //};
 
-          console.log(response);
-          console.dir(response);
+//          console.log(response);
+//          console.dir(response);
 
           if(isEmptyObject(res.entities)){
 
@@ -145,11 +145,10 @@ function handleMessage(sender_psid, received_message) {
           }else{
 
             for (var property in res.entities){
-
-              
+             
               if( (property == "transferencia") || (property == "conta_corrente") || (property == "agencia")) {
                 
-                responseText = property + " " +responseText;
+                responseText = property + " " + responseText;
 
 
               }
@@ -164,6 +163,9 @@ function handleMessage(sender_psid, received_message) {
             }
 
           }
+
+          console.log("responseText : " + responseText);
+          console.log("res.entities.length : " + res.entities.length);
 
           if(responseText.length > 0 && res.entities.length > 6){
 
@@ -180,7 +182,7 @@ function handleMessage(sender_psid, received_message) {
           }else{
 
             response = {
-              "text": "Não intendi ! Sou um bot e estou programado para fazer transferências"   
+              "text": "Não entendi ! Sou um bot e estou programado para fazer transferências"   
             };
 
           }
@@ -191,6 +193,8 @@ function handleMessage(sender_psid, received_message) {
   
           // Sends the response message
           callSendAPI(sender_psid, response);
+
+
 
           // MongoClient.connect(url, function(err, db) {
           //   if (err) throw err;
