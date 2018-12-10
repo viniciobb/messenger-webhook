@@ -170,7 +170,7 @@ function handleMessage(sender_psid, received_message) {
           console.log("responseText : " + responseText);
           console.log("res.entities.length : " + keys);
 
-          if(responseText.length > 0 && keys.length > 6){
+          if(responseText.length > 0 && keys.length >= 6){
 
             response = {
               "text": responseText   
