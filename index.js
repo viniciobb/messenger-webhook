@@ -164,10 +164,13 @@ function handleMessage(sender_psid, received_message) {
 
           }
 
-          console.log("responseText : " + responseText);
-          console.log("res.entities.length : " + res.entities.length);
+          var keys = [];
+          for(var k in res.entities) keys.push(k);
 
-          if(responseText.length > 0 && res.entities.length > 6){
+          console.log("responseText : " + responseText);
+          console.log("res.entities.length : " + keys);
+
+          if(responseText.length > 0 && keys.length > 6){
 
             response = {
               "text": responseText   
