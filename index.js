@@ -145,7 +145,7 @@ function handleMessage(sender_psid, received_message) {
             for (var property in res.entities){
 
               
-              if( (property == "transferencia") || (property == "conta-corrente") || (property == "agencia")) {
+              if( (property == "transferencia") || (property == "conta_corrente") || (property == "agencia")) {
                 
                 responseText = property + " " +responseText;
 
