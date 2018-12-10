@@ -171,10 +171,16 @@ function handleMessage(sender_psid, received_message) {
               "text": responseText   
             };
 
-          }else{
+          }else if(responseText.length > 0){
 
             response = {
               "text": "Dados insuficientes : ex: transferir para agencia XXX conta-corrente xxx valor xxxx "   
+            };
+
+          }else{
+
+            response = {
+              "text": "Não intendi ! Sou um bot e estou programado para fazer transferências"   
             };
 
           }
