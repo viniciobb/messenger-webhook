@@ -103,6 +103,8 @@ function handleMessage(sender_psid, received_message) {
   let response;
   let responseText = "";
   let propriedades = {};
+  let obrigatorios = 3;
+
 
   // Check if the message contains text
 
@@ -149,6 +151,7 @@ function handleMessage(sender_psid, received_message) {
                 
                 responseText = property + " " +responseText;
 
+
               }
               else{
                 if((property == "tipo_conta_corrente") || (property == "tipo_agencia") || (property == "amount_of_money")){
@@ -162,10 +165,16 @@ function handleMessage(sender_psid, received_message) {
 
           }
 
-          if(responseText.length > 0){
+          if(responseText.length > 0 && res.entities.length > 6){
 
             response = {
-              "text": responseText
+              "text": responseText   
+            };
+
+          }else{
+
+            response = {
+              "text": "Dados insuficientes : ex: transferir para agencia XXX conta-corrente xxx valor xxxx "   
             };
 
           }
