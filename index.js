@@ -164,17 +164,17 @@ function handleMessage(sender_psid, received_message) {
 
           }
 
-          var keys = [];
-          for(var k in responseText) keys.push(k);
-          keys.reverse();
+          //var keys = [];
+          //for(var k in responseText) keys.push(k);
+          //keys.reverse();
 
-          console.log("responseText : " + responseText);
-          console.log("res.entities.length : " + keys);
+          console.log("responseText : " + responseText.toString);
+          //console.log("res.entities.length : " + keys);
 
-          if(responseText.length > 0 && keys.length >= 6){
+          if(responseText.length > 0 && responseText.length >= 6){
 
             response = {
-              "text": responseText   
+              "text": responseText.toString()   
             };
 
           }else if(responseText.length > 0){
