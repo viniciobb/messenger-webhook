@@ -166,6 +166,7 @@ function handleMessage(sender_psid, received_message) {
 
           var keys = [];
           for(var k in res.entities) keys.push(k);
+          keys.reverse();
 
           console.log("responseText : " + responseText);
           console.log("res.entities.length : " + keys);
@@ -173,7 +174,7 @@ function handleMessage(sender_psid, received_message) {
           if(responseText.length > 0 && keys.length >= 6){
 
             response = {
-              "text": responseText   
+              "text": keys.toString()   
             };
 
           }else if(responseText.length > 0){
