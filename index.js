@@ -101,7 +101,7 @@ function handleMessage(sender_psid, received_message) {
   console.log("entrou handleMessage");
 
   let response;
-  let responseText = "";
+  let responseText = [];
   let propriedades = {};
   let obrigatorios = 3;
 
@@ -148,14 +148,14 @@ function handleMessage(sender_psid, received_message) {
              
               if( (property == "transferencia") || (property == "conta_corrente") || (property == "agencia")) {
                 
-                responseText = property + " " + responseText;
+                responseText.push(property);
 
 
               }
               else{
                 if((property == "tipo_conta_corrente") || (property == "tipo_agencia") || (property == "amount_of_money")){
 
-                  responseText = res.entities[property][0].value + " " +responseText;
+                  responseText.push(res.entities[property][0].value);
 
                 }
 
@@ -165,7 +165,7 @@ function handleMessage(sender_psid, received_message) {
           }
 
           var keys = [];
-          for(var k in res.entities) keys.push(k);
+          for(var k in responseText) keys.push(k);
           keys.reverse();
 
           console.log("responseText : " + responseText);
@@ -174,7 +174,7 @@ function handleMessage(sender_psid, received_message) {
           if(responseText.length > 0 && keys.length >= 6){
 
             response = {
-              "text": keys.toString()   
+              "text": responseText   
             };
 
           }else if(responseText.length > 0){
